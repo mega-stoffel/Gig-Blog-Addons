@@ -15,10 +15,11 @@ function gb_archive()
     'post_type'        => 'post',
     'author'    => $gbAutorID,
     'post_status'      => 'publish',
-    'category'         => '-224,-686,-826,-2746,-3289',
+    'category'         => '-224,-505,-686,-826,-2746,-3289',
     'suppress_filters' => true 
     );
     // Interview 224
+    // Vorankündigung 505
     // Nachruf 686
     // Verlosung 826
     // Top Liste 2746
