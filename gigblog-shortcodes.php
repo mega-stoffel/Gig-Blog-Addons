@@ -6,7 +6,11 @@
 
 function gb_archive()
 {
-
+    if (!(isset($gbAutorID)))
+    {
+        $gbAutorID = 0;
+    }
+    
     global $post;
     $postArguments = array(
     'posts_per_page'   => 1000,

@@ -8,9 +8,6 @@ Author:       X-tof Hoyer
 Author URI:   https://gig-blog.net
 */
 
-register_activation_hook( __FILE__ , 'tallbike_install' );
-//register_activation_hook( __FILE__ , 'tallbike_install_data' );
-
 // -----------------------------------
 //       S H O R T C O D E S
 // -----------------------------------
