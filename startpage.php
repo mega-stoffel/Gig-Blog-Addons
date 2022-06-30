@@ -13,3 +13,4 @@ Author URI:   https://gig-blog.net
 // -----------------------------------
 require_once( 'gigblog-shortcodes.php' );
 add_shortcode('gb_archive', 'gb_archive');
+add_shortcode('gb_randomPost', 'gb_randomPost');
