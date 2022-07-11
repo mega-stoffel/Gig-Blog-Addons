@@ -4,6 +4,7 @@
 // https://www.inkthemes.com/learn-how-to-create-shortcodes-in-wordpress-plugin-with-examples/
 // remember the include in the startpage.php
 
+// ------------------------------------------------------------
 // this function should format the output of the event's description
 // input values:
 // gbEventString should be the post_title
@@ -12,14 +13,20 @@ function formatGBEventName($gbEventString, $gbrandomTitle)
 {
     if($gbrandomTitle)
     {
-        $output = '1raus' . $gbEventString . 'raus2';
+        $output = 'zuf&auml;lliger Artikel';
     }
     else
     {
-        $output = 'ohneZufall';
+        $commaPosition = strpos($gbEventString, ",");
+        if ($commaPosition)
+        {
+            $output = strtok($gbEventString, ",");
+        }
+        //$output = '';
     }
     return $output;
 }
+// ------------------------------------------------------------
 
 function gb_archive()
 {
@@ -126,7 +133,7 @@ function gb_randomPost()
         $randomPostLink = get_permalink($randomPost);
         $gb_output .= '<a href="' . $randomPostLink .'">';
         //$gb_output .= $randomTitle . '</a>';
-        $gb_output .= formatGBEventName($randomTitle, true);
+        $gb_output .= formatGBEventName($randomTitle, false);
     }
     
     // $firstComma = strpos($eventTitle, ',') +1;
