@@ -181,4 +181,14 @@ function gb_randomPost()
     return $gb_output; 
 }
 
+function gb_postCount()
+{
+    $numberOfPosts = wp_count_posts()->publish;
+    $roundDown = (int)($numberOfPosts / 100) *100;
+
+    wp_reset_postdata();
+
+    return $roundDown; 
+}
+
 ?>
