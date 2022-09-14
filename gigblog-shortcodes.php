@@ -191,4 +191,20 @@ function gb_postCount()
     return $roundDown; 
 }
 
+function gb_randomPage()
+{
+    $numberOfPosts = wp_count_posts()->publish;
+    $optionsPostonPage = get_option('posts_per_page');
+    $pagesCounter = (int) ($numberOfPosts / $optionsPostonPage);
+
+    if ($numberOfPosts % $optionsPostonPage != 0)
+    {
+        $pagesCounter++;
+    }
+
+    wp_reset_postdata();
+
+    return $pagesCounter; 
+}
+
 ?>
