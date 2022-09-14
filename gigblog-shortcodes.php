@@ -181,6 +181,11 @@ function gb_randomPost()
     return $gb_output; 
 }
 
+# ------------------------------------------
+# This function gets the number of all posts.
+# And then rounds it down to the lower hundreds.
+# Can be used to show a rough number of published posts.
+# ------------------------------------------
 function gb_postCount()
 {
     $numberOfPosts = wp_count_posts()->publish;
@@ -191,6 +196,11 @@ function gb_postCount()
     return $roundDown; 
 }
 
+# ------------------------------------------
+# This function gets the number of all posts.
+# Divides them with the number of posts per page.
+# Gets a random number of all pages.
+# ------------------------------------------
 function gb_randomPage()
 {
     $numberOfPosts = wp_count_posts()->publish;
