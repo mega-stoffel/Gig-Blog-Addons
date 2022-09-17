@@ -218,7 +218,9 @@ function gb_randomPage()
 
     wp_reset_postdata();
 
-    return $pagesCounter; 
+    $returnRandomNumber = rand(1,$pagesCounter);
+
+    return $returnRandomNumber; 
 }
 
 ?>
