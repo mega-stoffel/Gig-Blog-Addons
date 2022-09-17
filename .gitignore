@@ -10,12 +10,14 @@ wp-content/*
 
 # ignore these plugins
 plugins/hello.php
+plugins/index.php
 plugins/akismet
 plugins/classic-editor
 plugins/wp-lazy-loading
 
 # ignore specific themes
 themes/twenty*/
+themes/index.php
 
 # ignore node dependency directories
 node_modules/
@@ -24,3 +26,6 @@ node_modules/
 *.log
 *.sql
 *.sqlite
+
+# ignore all default files
+index.php
