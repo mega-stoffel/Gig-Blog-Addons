@@ -9,10 +9,10 @@ wp-content/*
 !wp-content/themes/
 
 # ignore these plugins
-wp-content/plugins/hello.php
-wp-content/plugins/akismet
-wp-content/plugins/classic-editor
-wp-content/plugins/wp-lazy-loading
+plugins/hello.php
+plugins/akismet
+plugins/classic-editor
+plugins/wp-lazy-loading
 
 # ignore specific themes
 wp-content/themes/twenty*/
