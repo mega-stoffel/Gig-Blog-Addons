@@ -10,6 +10,9 @@ wp-content/*
 
 # ignore these plugins
 wp-content/plugins/hello.php
+wp-content/plugins/akismet
+wp-content/plugins/classic-editor
+wp-content/plugins/wp-lazy-loading
 
 # ignore specific themes
 wp-content/themes/twenty*/
