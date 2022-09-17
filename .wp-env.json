@@ -1,0 +1,13 @@
+{
+    "plugins": [ "WordPress/wp-lazy-loading", "WordPress/classic-editor"],
+    "mappings": {
+        "wp-content/plugins": "./plugins",
+        "wp-content/themes": "./themes",
+        "wp-content/backup-migration*": "./backup"
+    },
+    "themes": [ "WordPress/theme-experiments" ],
+    "config": {
+	    "WP_DEBUG": true,
+	    "WP_DEBUG_DISPLAY": true
+	}
+}

@@ -22,7 +22,10 @@ function formatGBEventName($gbEventString, $gbrandomTitle)
         {
             $output = strtok($gbEventString, ",");
         }
-        //$output = '';
+        else
+        {
+            $output = $gbEventString;
+        }
     }
     return $output;
 }
@@ -134,6 +137,7 @@ function gb_randomPost()
         $gb_output .= '<a href="' . $randomPostLink .'">';
         //$gb_output .= $randomTitle . '</a>';
         $gb_output .= formatGBEventName($randomTitle, false);
+        $gb_output .= '</a>';
     }
     
     // $firstComma = strpos($eventTitle, ',') +1;
