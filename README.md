@@ -29,6 +29,5 @@ Can be used to show a rough number of published posts.
 ### Preparation
 
 Install a working wp-env environment. For details, see here:  
-https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/
+https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/  
 (it needs docker, as well, as far as I understand)
-
