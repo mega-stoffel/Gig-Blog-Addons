@@ -31,3 +31,21 @@ Can be used to show a rough number of published posts.
 Install a working wp-env environment. For details, see here:  
 https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/  
 (it needs docker, as well, as far as I understand)
+
+Install any git.
+
+### Clone code
+
+Go to any directory of your local file system and execute:  
+```git clone https://github.com/mega-stoffel/Gig-Blog-Addons.git```  
+Now go to the subdirectory it just created: `cd Gig-Blog-Addons`
+
+### Run it
+
+Easy as that: `wp-env start`  
+I realized in some strange situations on a Win10 machine with a WSL2 I needed to execute it as root: `sudo wp-env start`
+
+### Open browser
+
+In any browser you could start this empty Wordpress instance, now. Just open: `localhost:8888`, you even have a second instance on port 8889.  
+Your default access to the backend localhost:888[8/9]/wp-admin is - no shit: admin/password
