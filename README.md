@@ -48,4 +48,8 @@ I realized in some strange situations on a Win10 machine with a WSL2 I needed to
 ### Open browser
 
 In any browser you could start this empty Wordpress instance, now. Just open: `localhost:8888`, you even have a second instance on port 8889.  
-Your default access to the backend localhost:888[8/9]/wp-admin is - no shit: admin/password
+Your default access to the backend localhost:888[8/9]/wp-admin is - no shit: admin/password  
+
+Go to the Wordpress settings and plugins. Activate the Plugin "Gig-Blog Addons".
+
+If wanted, import the (very, very) dummy content from the backup folder.
