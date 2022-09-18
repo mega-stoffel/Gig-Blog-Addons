@@ -14,6 +14,7 @@ plugins/index.php
 plugins/akismet
 plugins/classic-editor
 plugins/wp-lazy-loading
+plugins/wordpress-importer
 
 # ignore specific themes
 themes/twenty*/
