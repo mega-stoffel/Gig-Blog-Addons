@@ -31,6 +31,9 @@ function formatGBEventName($gbEventString, $gbrandomTitle)
 }
 // ------------------------------------------------------------
 
+// ------------------------------------------
+// This function gets an archive of all existing posts. Limited with some exceptions.
+// ------------------------------------------
 function gb_archive()
 {
     if (!(isset($gbAutorID)))
@@ -108,6 +111,11 @@ function gb_archive()
 
     return $gb_output; 
 }
+
+// ------------------------------------------
+// This function simply gets a random post of all existing posts.
+// And then it returns a link to this post, named with the post's headline until the first comma.
+// ------------------------------------------
 
 function gb_randomPost()
 {
