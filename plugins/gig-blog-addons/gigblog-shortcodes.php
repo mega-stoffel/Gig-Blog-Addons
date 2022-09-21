@@ -9,13 +9,17 @@
 // input values:
 // gbEventString should be the post_title
 // gbrandomTitle is boolean, true/false and will just format it differently
-function formatGBEventName($gbEventString, $gbrandomTitle)
+function formatGBEventName($gbEventString, $gboutputType)
 {
-    if($gbrandomTitle)
+    if($gboutputType == "random")
     {
         $output = 'zuf&auml;lliger Artikel';
     }
-    else
+    if ($gboutputType == "latest")
+    {
+        $output = "Neuester Artikel";
+    }
+    if ($gboutputType == "fullinfo")
     {
         $commaPosition = strpos($gbEventString, ",");
         if ($commaPosition)
@@ -111,13 +115,29 @@ function gb_archive()
 
     return $gb_output; 
 }
+// ------------------------------------------
+// This function simply gets a random post of all existing posts.
+// And then it returns a link to this post, named with the post's headline until the first comma.
+// ------------------------------------------
+
+function gb_latestPost()
+{
+    return gb_get_post("latest", "latestLink");
+
+}
+
+function gb_randomPost()
+{
+    return gb_get_post("random", "randomLink");
+
+}
 
 // ------------------------------------------
 // This function simply gets a random post of all existing posts.
 // And then it returns a link to this post, named with the post's headline until the first comma.
 // ------------------------------------------
 
-function gb_randomPost()
+function gb_randomPost2()
 {
     
     $randomArguments = array(
@@ -229,6 +249,100 @@ function gb_randomPage()
     $returnRandomNumber = rand(1,$pagesCounter);
 
     return $returnRandomNumber; 
+}
+
+
+// more information about it:
+// https://developer.wordpress.org/plugins/shortcodes/shortcodes-with-parameters/
+function gb_archive_person( $person = array(), $content = null, $tag = '' )
+{
+
+}
+
+function gb_get_post($postInfo = '', $outputType = '')
+{
+    // Interview 224
+    // Vorankündigung 505
+    // Nachruf 686
+    // Verlosung 826
+    // Top Liste 2746
+    // Adventskalender 3289
+    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+
+    switch ($postInfo)
+    {
+        case "latest":
+            $queryArguments = array(
+                'posts_per_page'   => 1,
+                'order'            => 'date',
+                'orderby'          => 'desc',
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                'category'         => $gb_exclude_categories,
+                'suppress_filters' => true);
+                break; 
+        case "random":
+            $queryArguments = array(
+                'posts_per_page'   => 1,
+                'orderby'          => 'rand',
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                'category'         => $gb_exclude_categories,
+                'suppress_filters' => true 
+            );
+            break;
+        case "all":
+            $queryArguments = array(
+                'posts_per_page'   => -1,
+                'orderby'          => 'date',
+                'order'            => 'desc',
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                'category'         => $gb_exclude_categories,
+                'suppress_filters' => true 
+                );
+            break;
+        // case 'years'
+        // {
+        //     $queryArguments = array(
+        //         'posts_per_page'   => -1,
+        //         'orderby'          => 'date',
+        //         'order'            => 'desc',
+        //         'post_type'        => 'post',
+        //         'post_status'      => 'publish',
+        //         'category'         => $gb_exclude_categories,
+        //         'suppress_filters' => true 
+        //         );
+        // }
+    }
+
+    $returnPost_array = get_posts($queryArguments); 
+
+    foreach ($returnPost_array as $returnPost)
+    {
+        $postTitle = $returnPost->post_title;
+        $postLink = get_permalink($returnPost);
+        
+        if ($outputType == "NameLink")
+        {
+            $gb_output = '<a href="' . $postLink .'">';
+            $gb_output .= formatGBEventName($postTitle, "fullinfo");
+            $gb_output .= '</a>';
+        }
+        if ($outputType == "randomLink")
+        {
+            $gb_output = '<a href="' . $postLink .'">';
+            $gb_output .= formatGBEventName($postTitle, "random");
+            $gb_output .= '</a>';
+        }
+        if ($outputType == "latestLink")
+        {
+            $gb_output = '<a href="' . $postLink .'">';
+            $gb_output .= formatGBEventName($postTitle, "latest");
+            $gb_output .= '</a>';
+        }
+    }
+    return $gb_output;
 }
 
 ?>
