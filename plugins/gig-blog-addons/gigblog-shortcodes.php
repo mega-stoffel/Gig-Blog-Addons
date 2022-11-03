@@ -8,7 +8,11 @@
 // this function should format the output of the event's description
 // input values:
 // gbEventString should be the post_title
-// gbrandomTitle is boolean, true/false and will just format it differently
+// gboutputType is one of several options:
+// - random: returns "zufälliger Artikel"
+// - latest: returns "Neuester Artikel"
+// - fullinfo: returns "Band1 [, Band2, Band3]
+
 function formatGBEventName($gbEventString, $gboutputType)
 {
     if($gboutputType == "random")
@@ -257,7 +261,110 @@ function gb_randomPage()
 // https://developer.wordpress.org/plugins/shortcodes/shortcodes-with-parameters/
 function gb_archive_person( $person = array(), $content = null, $tag = '' )
 {
+    
+}
 
+//----------------------------------------------------
+// This is the shortcode to show all entries from a specific year.
+// The shortcode has an array like "year=2021".
+// You can get the value of year by accessing the $parameter["year"].
+//----------------------------------------------------
+function gb_archive_year( $parameter )
+{
+
+    $gb_output = "";
+
+    global $post;
+    $queryArguments = array(
+    'posts_per_page'   => 1000,
+    'date_query' => array(
+		array(
+			'after'    => array(
+				'year'  => $parameter["year"],
+				'month' => 1,
+				'day'   => 1,
+			),
+			'before'    => array(
+				'year'  => $parameter["year"],
+				'month' => 12,
+				'day'   => 31,
+			),
+			'inclusive' => true,
+        ),
+    ),
+    'orderby'          => 'date',
+    'order'            => 'desc',
+    'post_type'        => 'post','page',
+    'post_status'      => 'publish',
+    'category'         => '-224,-505,-686,-826,-2746,-3289',
+    'suppress_filters' => true 
+    );
+    // Interview 224
+    // Vorankündigung 505
+    // Nachruf 686
+    // Verlosung 826
+    // Top Liste 2746
+    // Adventskalender 3289
+
+    $returnPost_array = get_posts($queryArguments); 
+
+    $gb_output .= "<ul>";
+    foreach ($returnPost_array as $returnPost)
+    {
+        $postTitle = $returnPost->post_title;
+        $postLink = get_permalink($returnPost);
+
+        $gb_output .= "<li><a href=\".$postLink.\">$postTitle</a><br></li>";
+    }
+    $gb_output .= "</ul>";
+
+    // foreach ( $myPosts_array as $post ) : setup_postdata( $post );
+    // $eventTitle = the_title('','',false);
+    // $publishDate = the_date('Y','','',false);
+    // $postpermalink = get_permalink();
+    // $firstComma = strpos($eventTitle, ',') +1;
+    // $eventTitleNoBand = trim(substr($eventTitle,$firstComma));
+    // $nextLetter = substr($eventTitleNoBand,0,1);
+    // if ($compareYear != $publishDate)
+    // {
+    //     // hier müsste man überlegen, ob man die <ul></ul> Sache noch entfernen könnte, so nicht:
+    //     //if ($compareYear != 1)
+    //     //    echo '</ul>';
+    //     if (is_numeric($publishDate))
+    //     {
+    //         $compareYear = $publishDate;
+    //         $gb_output .= '</ul><h3>' . $publishDate . '</h3><ul>';
+    //     }
+    // }
+    // if (is_numeric($nextLetter))
+    // {
+    // //  Bandname ist schon fertig:
+    //     $currentBand = trim(substr($eventTitle,0, $firstComma -1));
+    // }
+    // else
+    // {
+    // //  Bandnamen zusammenbasteln - hier müsste noch ein besserer Algorithmus her
+    //     $nextComma = strpos($eventTitleNoBand, ',') +1;
+    //     $eventTitleNoBand = trim(substr($eventTitleNoBand, $nextComma));
+    //     $currentBand = substr($eventTitle, 0 , $firstComma + $nextComma);
+    // }
+    // $secondComma= strpos($eventTitleNoBand, ',');
+    // $eventDate = substr($eventTitleNoBand ,0, $secondComma);
+    // $eventLocation = substr($eventTitleNoBand , $secondComma+1);
+    // Weiß der Teufel, warum diese Funktion nicht innerhalb von PHP Code läuft.
+
+    // $gb_output .= '<li> <a href="' . $postpermalink;
+
+    // $gb_output .= '">' . $currentBand . '</a><br>';
+    // $gb_output .= $eventDate . ', ' . $eventLocation . '</li>';
+    // endforeach; 
+    // wp_reset_postdata();
+
+    // $gb_output .= "my output!";
+    
+    wp_reset_postdata();
+
+    return $gb_output; 
 }
 
 function gb_get_post($postInfo = '', $outputType = '')

@@ -18,4 +18,7 @@ add_shortcode('gb_randomPost', 'gb_randomPost');
 add_shortcode('gb_latestPost', 'gb_latestPost');
 add_shortcode('gb_randomPage', 'gb_randomPage');
 add_shortcode('gb_postCount', 'gb_postCount');
+
+// Shortcodes with some parameters:
+add_shortcode('gb_archive_year', 'gb_archive_year');
 add_shortcode('gb_archive_person', 'gb_archive_person');
