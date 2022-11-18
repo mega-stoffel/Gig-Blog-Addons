@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/20329293/sql-server-how-to-group-by-substring
+https://stackoverflow.com/questions/47010140/sql-group-by-with-substr

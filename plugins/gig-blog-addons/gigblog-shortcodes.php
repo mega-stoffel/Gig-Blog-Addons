@@ -119,99 +119,109 @@ function gb_archive()
 
     return $gb_output; 
 }
-// ------------------------------------------
-// This function simply gets a random post of all existing posts.
-// And then it returns a link to this post, named with the post's headline until the first comma.
-// ------------------------------------------
 
+// ------------------------------------------
+// This function simply gets the latest of all existing posts.
+// And then it returns a link to this post, named "Neuster Beitrag".
+// ------------------------------------------
 function gb_latestPost()
 {
-    return gb_get_post("latest", "latestLink");
+    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    $latestArguments = array(
+        'posts_per_page'   => 1,
+        'order'            => 'date',
+        'orderby'          => 'desc',
+        'post_type'        => 'post',
+        'post_status'      => 'publish',
+        'category'         => $gb_exclude_categories,
+        'suppress_filters' => true
+        );
 
+    $latestPost_array = get_posts( $latestArguments ); 
+    $gb_output = '';
+
+    foreach ($latestPost_array as $latestPost)
+    {
+        $latestTitle = get_post_field('post_title', $latestPost);
+        $latestLink = get_permalink($latestPost);
+        $gb_output .= '<a href="' . $latestLink .'">';
+        $gb_output .= "Neuster Beitrag: ";
+        $gb_output .= trim(substr($latestTitle, 0, (strpos($latestTitle, ','))));
+        $gb_output .= '</a>';
+        // $postTitle = $returnPost->post_title;
+        // $postLink = get_permalink($returnPost);
+
+        // $gb_output .= "<li><a href=\".$postLink.\">$postTitle</a><br></li>\n";
+    }
+
+
+    wp_reset_postdata();
+
+    return $gb_output;
 }
+
+// ------------------------------------------
+// This function simply gets a random post of all existing posts.
+// And then it returns a link to this post, named "zufälliger Artikel".
+// This could be used for the insta-page.
+// ------------------------------------------
+function gb_randomPost2()
+{
+    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    $queryArguments = array(
+        'posts_per_page'   => 1,
+        'orderby'          => 'rand',
+        'post_type'        => 'post',
+        'post_status'      => 'publish',
+        'category'         => $gb_exclude_categories,
+        'suppress_filters' => true
+        );
+
+    $randomPost_array = get_posts( $queryArguments ); 
+    $gb_output = '';
+
+    foreach ($randomPost_array as $randomPost)
+    {
+        //$latestTitle = $latestPost->post_title;
+        $randomLink = get_permalink($randomPost);
+        $gb_output .= '<a href="' . $randomLink .'">';
+        $gb_output .= 'Zuf&auml;lliger Artikel</a>';
+    }
+
+    wp_reset_postdata();
+
+    return $gb_output;
+}
+
+
+// ------------------------------------------
+// This function simply gets a random post of all existing posts.
+// And then it returns a link to this post, named with "Zufälliger Beitrag aus dem Archiv".
+// ------------------------------------------
 
 function gb_randomPost()
 {
-    return gb_get_post("random", "randomLink");
-
-}
-
-// ------------------------------------------
-// This function simply gets a random post of all existing posts.
-// And then it returns a link to this post, named with the post's headline until the first comma.
-// ------------------------------------------
-
-function gb_randomPost2()
-{
-    
+    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
     $randomArguments = array(
     'posts_per_page'   => 1,
     'orderby'          => 'rand',
     'post_type'        => 'post',
     'post_status'      => 'publish',
-    'category'         => '-224,-505,-686,-826,-2746,-3289',
-    'suppress_filters' => true 
+    'category'         => $gb_exclude_categories,
+    'suppress_filters' => true, 
     );
     
-    // Interview 224
-    // Vorankündigung 505
-    // Nachruf 686
-    // Verlosung 826
-    // Top Liste 2746
-    // Adventskalender 3289
-
     $randomPost_array = get_posts( $randomArguments ); 
+
     $gb_output = '';
 
-    foreach ( $randomPost_array as $randomPost )
+    foreach ($randomPost_array as $randomPost)
     {
-        $randomTitle = $randomPost->post_title;
-        $randomPostLink = get_permalink($randomPost);
-        $gb_output .= '<a href="' . $randomPostLink .'">';
-        //$gb_output .= $randomTitle . '</a>';
-        $gb_output .= formatGBEventName($randomTitle, false);
-        $gb_output .= '</a>';
+        $randomLink = get_permalink($randomPost);
+        $gb_output .= '<a href="' . $randomLink .'">';
+        $gb_output .= "Zuf&auml;lliger Beitrag";
+        $gb_output .= '</a> aus dem Archiv';
     }
-    
-    // $firstComma = strpos($eventTitle, ',') +1;
-    // $eventTitleNoBand = trim(substr($eventTitle,$firstComma));
-    // $nextLetter = substr($eventTitleNoBand,0,1);
-    // if ($compareYear != $publishDate)
-    // {
-    //     // hier müsste man überlegen, ob man die <ul></ul> Sache noch entfernen könnte, so nicht:
-    //     //if ($compareYear != 1)
-    //     //    echo '</ul>';
-    //     if (is_numeric($publishDate))
-    //     {
-    //         $compareYear = $publishDate;
-    //         $gb_output .= '</ul><h3>' . $publishDate . '</h3><ul>';
-    //     }
-    // }
-    // if (is_numeric($nextLetter))
-    // {
-    // //  Bandname ist schon fertig:
-    //     $currentBand = trim(substr($eventTitle,0, $firstComma -1));
-    // }
-    // else
-    // {
-    // //  Bandnamen zusammenbasteln - hier müsste noch ein besserer Algorithmus her
-    //     $nextComma = strpos($eventTitleNoBand, ',') +1;
-    //     $eventTitleNoBand = trim(substr($eventTitleNoBand, $nextComma));
-    //     $currentBand = substr($eventTitle, 0 , $firstComma + $nextComma);
-    // }
-    // $secondComma= strpos($eventTitleNoBand, ',');
-    // $eventDate = substr($eventTitleNoBand ,0, $secondComma);
-    // $eventLocation = substr($eventTitleNoBand , $secondComma+1);
-    // // Weiß der Teufel, warum diese Funktion nicht innerhalb von PHP Code läuft.
-
-    // $gb_output .= '<li> <a href="' . $postpermalink;
-
-    // $gb_output .= '">' . $currentBand . '</a><br>';
-    // $gb_output .= $eventDate . ', ' . $eventLocation . '</li>';
-    // endforeach; 
-    // wp_reset_postdata();
-
-    //$gb_output .= "my output!";
     
     wp_reset_postdata();
 
@@ -249,9 +259,11 @@ function gb_randomPage()
         $pagesCounter++;
     }
 
-    wp_reset_postdata();
+    //wp_reset_postdata();
 
     $returnRandomNumber = rand(1,$pagesCounter);
+
+    wp_reset_postdata();
 
     return $returnRandomNumber; 
 }
@@ -308,15 +320,15 @@ function gb_archive_year( $parameter )
 
     $returnPost_array = get_posts($queryArguments); 
 
-    $gb_output .= "<ul>";
+    $gb_output .= "<ul>\n";
     foreach ($returnPost_array as $returnPost)
     {
         $postTitle = $returnPost->post_title;
         $postLink = get_permalink($returnPost);
 
-        $gb_output .= "<li><a href=\".$postLink.\">$postTitle</a><br></li>";
+        $gb_output .= "<li><a href=\".$postLink.\">$postTitle</a><br></li>\n";
     }
-    $gb_output .= "</ul>";
+    $gb_output .= "</ul>\n";
 
     // foreach ( $myPosts_array as $post ) : setup_postdata( $post );
     // $eventTitle = the_title('','',false);
@@ -367,6 +379,73 @@ function gb_archive_year( $parameter )
     return $gb_output; 
 }
 
+function gb_format_post($gb_post_title = '', $outputType = '')
+{
+    switch ($gb_post_title)
+    {
+        case "latest":
+            $queryArguments = array(
+                'posts_per_page'   => 1,
+                'order'            => 'date',
+                'orderby'          => 'desc',
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                'category'         => $gb_exclude_categories,
+                'suppress_filters' => true
+                );
+            break; 
+        case "random":
+            $queryArguments = array(
+                'posts_per_page'   => 1,
+                'orderby'          => 'rand',
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                'category'         => $gb_exclude_categories,
+                'suppress_filters' => true 
+                );
+            break;
+        case "all":
+            $queryArguments = array(
+                'posts_per_page'   => -1,
+                'orderby'          => 'date',
+                'order'            => 'desc',
+                'post_type'        => 'post',
+                'post_status'      => 'publish',
+                'category'         => $gb_exclude_categories,
+                'suppress_filters' => true 
+                );
+            break;
+    }
+
+    $returnPost_array = get_posts($queryArguments); 
+
+    foreach ($returnPost_array as $returnPost)
+    {
+        $postTitle = $returnPost->post_title;
+        $postLink = get_permalink($returnPost);
+        
+        if ($outputType == "NameLink")
+        {
+            $gb_output = '<a href="' . $postLink .'">';
+            $gb_output .= formatGBEventName($postTitle, "fullinfo");
+            $gb_output .= '</a>';
+        }
+        if ($outputType == "randomLink")
+        {
+            $gb_output = '<a href="' . $postLink .'">';
+            $gb_output .= formatGBEventName($postTitle, "random");
+            $gb_output .= '</a>';
+        }
+        if ($outputType == "latestLink")
+        {
+            $gb_output = '<a href="' . $postLink .'">';
+            $gb_output .= formatGBEventName($postTitle, "latest");
+            $gb_output .= '</a>';
+        }
+    }
+    return $gb_output;
+}
+
 function gb_get_post($postInfo = '', $outputType = '')
 {
     // Interview 224
@@ -387,8 +466,9 @@ function gb_get_post($postInfo = '', $outputType = '')
                 'post_type'        => 'post',
                 'post_status'      => 'publish',
                 'category'         => $gb_exclude_categories,
-                'suppress_filters' => true);
-                break; 
+                'suppress_filters' => true
+                );
+            break; 
         case "random":
             $queryArguments = array(
                 'posts_per_page'   => 1,
@@ -397,7 +477,7 @@ function gb_get_post($postInfo = '', $outputType = '')
                 'post_status'      => 'publish',
                 'category'         => $gb_exclude_categories,
                 'suppress_filters' => true 
-            );
+                );
             break;
         case "all":
             $queryArguments = array(
@@ -410,18 +490,6 @@ function gb_get_post($postInfo = '', $outputType = '')
                 'suppress_filters' => true 
                 );
             break;
-        // case 'years'
-        // {
-        //     $queryArguments = array(
-        //         'posts_per_page'   => -1,
-        //         'orderby'          => 'date',
-        //         'order'            => 'desc',
-        //         'post_type'        => 'post',
-        //         'post_status'      => 'publish',
-        //         'category'         => $gb_exclude_categories,
-        //         'suppress_filters' => true 
-        //         );
-        // }
     }
 
     $returnPost_array = get_posts($queryArguments); 
