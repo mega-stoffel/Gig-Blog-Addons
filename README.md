@@ -13,10 +13,15 @@ It's used on https://gig-blog.net
 - gb_randomPost  
 This function simply gets a random post of all existing posts.  
 And then it returns a link to this post, named with the post's headline until the first comma.  
+- gb_randomPost2  
+This function simply gets a random post of all existing posts and returns a different string.  
 - gb_randomPage  
 This function gets the number of all posts.  
 Divides them with the number of posts per page from the options.  
 THen gets a random number of all available pages.  
+- gb_archive_year  
+This function gets an archive of all existing posts for a specified year.  
+Use like [gb_archive_year year=2022]  
 - gb_archive  
 This function gets an archive of all existing posts. Limited with some exceptions.  
 - gb_postCount    
