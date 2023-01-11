@@ -284,6 +284,24 @@ function gb_archive_person( $person = array(), $content = null, $tag = '' )
 function gb_archive_year( $parameter )
 {
 
+    $gb_year_parameter = $parameter["year"];
+
+    $gb_error ="Please provide a proper year in the shortcode!";
+
+    if (! is_numeric($gb_year_parameter))
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_current_year = date("Y");
+
+    if (! (($gb_year_parameter <= $gb_current_year) && ($gb_year_parameter >= 2009)) )
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
     $gb_output = "";
 
     global $post;
@@ -292,12 +310,12 @@ function gb_archive_year( $parameter )
     'date_query' => array(
 		array(
 			'after'    => array(
-				'year'  => $parameter["year"],
+				'year'  => $gb_year_parameter,
 				'month' => 1,
 				'day'   => 1,
 			),
 			'before'    => array(
-				'year'  => $parameter["year"],
+				'year'  => $gb_year_parameter,
 				'month' => 12,
 				'day'   => 31,
 			),
