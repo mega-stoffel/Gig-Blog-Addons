@@ -442,8 +442,7 @@ function gb_statistics_year( $parameter )
             ORDER BY COUNT(gb_location) desc
         ");
 
-    //print_r("mindate: " . $gb_max_date . " --- " .$result);
-    print_r($results);
+    //print_r($results);
 
     foreach ($results as $result)
     {
