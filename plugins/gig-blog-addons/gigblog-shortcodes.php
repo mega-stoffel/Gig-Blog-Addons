@@ -397,6 +397,82 @@ function gb_archive_year( $parameter )
     return $gb_output; 
 }
 
+//----------------------------------------------------
+// This is the shortcode to show all entries from a specific year.
+// The shortcode has an array like "year=2021".
+// You can get the value of year by accessing the $parameter["year"].
+//----------------------------------------------------
+function gb_statistics_year( $parameter )
+{
+
+    $gb_year_parameter = $parameter["year"];
+
+    $gb_error ="Please provide a proper year in the shortcode!";
+
+    if (! is_numeric($gb_year_parameter))
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_current_year = date("Y");
+
+    if (! (($gb_year_parameter <= $gb_current_year) && ($gb_year_parameter >= 2009)) )
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_output = "";
+
+    $gb_min_date = $gb_year_parameter . "-01-01 00:00:00";
+    $gb_max_date = $gb_year_parameter . "-12-31 23:59:59";
+    
+    global $wpdb;
+    $results = $wpdb->get_results("SELECT *, post_title as GB_POST,
+            REVERSE(SUBSTRING_INDEX(REVERSE(post_title), ',' , 2)) as gb_location,
+            count(REVERSE(SUBSTRING_INDEX(REVERSE(post_title), ',' , 2))) as gb_counter
+        FROM {$wpdb->prefix}posts 
+        WHERE   ( post_type = 'post' 
+                AND post_status = 'publish'
+                AND post_date >= '$gb_min_date'
+                AND post_date <= '$gb_max_date'
+                )
+            GROUP BY gb_location
+            ORDER BY COUNT(gb_location) desc
+        ");
+
+    //print_r("mindate: " . $gb_max_date . " --- " .$result);
+    print_r($results);
+
+    foreach ($results as $result)
+    {
+        $gb_output .= $result->gb_counter ."x @ ";
+
+        //cut off "Stuttgart", but keep the city for everything else
+        $mod_location = $result->gb_location;
+        if (strstr($mod_location,",") == ", Stuttgart")
+        {
+            $gb_output .= substr($mod_location,0, strpos($mod_location,","));
+        }
+        else
+        {
+            $gb_output .= $mod_location;
+        }
+        $gb_output .=  "<br>";
+    }
+
+    return($gb_output);
+
+    // Interview 224
+    // Vorankündigung 505
+    // Nachruf 686
+    // Verlosung 826
+    // Top Liste 2746
+    // Adventskalender 3289
+
+}
+
 function gb_format_post($gb_post_title = '', $outputType = '')
 {
     switch ($gb_post_title)
