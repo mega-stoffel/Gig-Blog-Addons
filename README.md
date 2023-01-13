@@ -22,6 +22,9 @@ THen gets a random number of all available pages.
 - gb_archive_year  
 This function gets an archive of all existing posts for a specified year.  
 Use like [gb_archive_year year=2022]  
+- gb_statistics_year  
+This function generates a simple statistic for a specified year.
+Use like [gb_statistics_year year=2022]  
 - gb_archive  
 This function gets an archive of all existing posts. Limited with some exceptions.  
 - gb_postCount    
