@@ -398,11 +398,118 @@ function gb_archive_year( $parameter )
 }
 
 //----------------------------------------------------
-// This is the shortcode to show all entries from a specific year.
+// This is the shortcode to show a quick statistic from a specific year.
 // The shortcode has an array like "year=2021".
 // You can get the value of year by accessing the $parameter["year"].
 //----------------------------------------------------
 function gb_statistics_year( $parameter )
+{
+
+    $gb_year_parameter = $parameter["year"];
+    $gb_error ="Please provide a proper year in the shortcode!";
+
+    if (! is_numeric($gb_year_parameter))
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_current_year = date("Y");
+
+    if (! (($gb_year_parameter <= $gb_current_year) && ($gb_year_parameter >= 2009)) )
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_output = "";
+
+    global $post;
+    $queryArguments = array(
+    'posts_per_page'   => 1000,
+    'date_query' => array(
+		array(
+			'after'    => array(
+				'year'  => $gb_year_parameter,
+				'month' => 1,
+				'day'   => 1,
+			),
+			'before'    => array(
+				'year'  => $gb_year_parameter,
+				'month' => 12,
+				'day'   => 31,
+			),
+			'inclusive' => true,
+        ),
+    ),
+    'orderby'          => 'date',
+    'order'            => 'desc',
+    'post_type'        => 'post','page',
+    'post_status'      => 'publish',
+    'category'         => '-224,-505,-686,-826,-2746,-3289',
+    'suppress_filters' => true 
+    );
+    // Interview 224
+    // Vorankündigung 505
+    // Nachruf 686
+    // Verlosung 826
+    // Top Liste 2746
+    // Adventskalender 3289
+
+    $returnPost_array = get_posts($queryArguments); 
+
+    //$gb_LocationArray = array("location" => "","city" => "");
+    $gb_LocationArray = array();
+    $concertCounter = 0;
+
+    //getting all locations from the post_title and put into an array:
+    foreach ($returnPost_array as $returnPost)
+    {
+        $postTitle = $returnPost->post_title;
+
+        $post_Length = strlen($postTitle);
+        $commaLocation1 = strrpos($postTitle, ",");
+        //calculation for little strange offset for strrpos
+        $commaLocation1neg = (-1)*($post_Length - $commaLocation1+1);
+        $commaLocation2 = strrpos($postTitle, ",", $commaLocation1neg)+1;
+
+        //this includes the LOCATION, CITY, i.e. everything behind the second last comma:
+        $gb_LocationOnly = substr($postTitle,$commaLocation2);
+        $concertCounter = array_push($gb_LocationArray, $gb_LocationOnly);
+
+    }
+    //just by accident we received the number of all concerts with this method
+    $gb_output .= $concertCounter . " Konzerte im Jahr " . $gb_year_parameter ."<br>";
+
+    //this is, where the magic (i.e. counting) happens
+    $gb_Counted = array_count_values($gb_LocationArray);
+    //and here is some sorting 
+    arsort($gb_Counted);
+
+    $gbcounter = 0;
+
+    //this outputs the whole statistic:
+    $gb_output .= "<ul>\n";
+    foreach($gb_Counted as $gb_countLoc => $gb_countNum)
+    {
+        //just check, if it ends with ", Stuttgart" and remove this
+        if (substr($gb_countLoc,strpos($gb_countLoc,",")) == ", Stuttgart")
+        {
+            $gb_countLoc = substr($gb_countLoc,0,strpos($gb_countLoc,","));
+        }
+        $gb_output .= "<li>".$gb_countLoc . ": " . $gb_countNum."x</li>\n";
+        $gbcounter++;
+    }
+    $gb_output .= "</ul>\n";
+    
+    wp_reset_postdata();
+    
+    return $gb_output; 
+    
+}
+
+//this function executes a hard SQL statement, which is probably very hard to find with all the categories, we don't want in the statistics
+function gb_statistics_year_2( $parameter )
 {
 
     $gb_year_parameter = $parameter["year"];
