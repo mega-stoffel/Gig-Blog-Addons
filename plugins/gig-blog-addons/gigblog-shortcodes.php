@@ -406,6 +406,138 @@ function gb_statistics_year( $parameter )
 {
 
     $gb_year_parameter = $parameter["year"];
+    $gb_error ="Please provide a proper year in the shortcode!";
+
+    if (! is_numeric($gb_year_parameter))
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_current_year = date("Y");
+
+    if (! (($gb_year_parameter <= $gb_current_year) && ($gb_year_parameter >= 2009)) )
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_output = "";
+
+    global $post;
+    $queryArguments = array(
+    'posts_per_page'   => 1000,
+    'date_query' => array(
+		array(
+			'after'    => array(
+				'year'  => $gb_year_parameter,
+				'month' => 1,
+				'day'   => 1,
+			),
+			'before'    => array(
+				'year'  => $gb_year_parameter,
+				'month' => 12,
+				'day'   => 31,
+			),
+			'inclusive' => true,
+        ),
+    ),
+    'orderby'          => 'date',
+    'order'            => 'desc',
+    'post_type'        => 'post','page',
+    'post_status'      => 'publish',
+    'category'         => '-224,-505,-686,-826,-2746,-3289',
+    'suppress_filters' => true 
+    );
+    // Interview 224
+    // Vorankündigung 505
+    // Nachruf 686
+    // Verlosung 826
+    // Top Liste 2746
+    // Adventskalender 3289
+
+    $returnPost_array = get_posts($queryArguments); 
+
+    $gb_LocationArray = array("location" => "","city" => "");
+    $compareCounter = 0;
+
+    $gb_output .= "<ul>\n";
+    foreach ($returnPost_array as $returnPost)
+    {
+        $postTitle = $returnPost->post_title;
+        $postLink = get_permalink($returnPost);
+
+        $post_Length = strlen($postTitle);
+        $commaLocation1 = strrpos($postTitle, ",");
+        //calculation for little strange offset for strrpos
+        $commaLocation1neg = (-1)*($post_Length - $commaLocation1+1);
+        $commaLocation2 = strrpos($postTitle, ",", $commaLocation1neg)+1;
+
+        //this includes the LOCATION, CITY, i.e. everything behind the second last comma:
+        $gb_Location = substr($postTitle,$commaLocation2);
+        
+        $gb_LocationTok = explode(",", $gb_Location);
+
+        $gb_LocationArray = array_merge($gb_LocationArray, $gb_LocationTok);
+
+        //var_dump($gb_LocationTok);
+        //var_dump($gb_LocationArray);
+        //var_dump($gb_LocationArray2);
+        //$gb_output .="..<br>..";
+        //print_r($gb_LocationArray);
+        // $i=0;
+        // if ($i == 0)
+        // {
+        //     $gb_compareArray[0]["location"] = $gb_LocationTok[0];
+        //     $gb_compareArray[0]["counter"] = 1;
+        //     $i+=1;
+        // }
+        // else
+        // {
+        //     //$gb_output .= "im else/if: " . $i ."<br>";
+        //     //var_dump($gb_compareArray);
+        //     print_r($gb_compareArray);
+        //     if ($gb_compareArray[$i]["location"] == $gb_LocationTok)
+        //     {
+        //         $gb_compareArray[$i]["counter"] +=1;
+        //     }
+        //     else
+        //     {
+        //         $gb_compareArray[$i]["location"] = $gb_LocationTok[0];
+        //     }
+        //     if (isset($gb_compareArray[$i]["counter"]))
+        //     {
+        //         $gb_compareArray[$i]["counter"] +=1;
+        //     }
+        //     else
+        //     {
+        //         $gb_compareArray[$i]["counter"] = 1;
+        //     }
+        //     $gb_compareArray[$i]["counter"]=2;
+        //     $gb_output .= "ar1:" . $gb_compareArray[$i]["location"] . " - ar2: " . $gb_compareArray[$i]["counter"] . "<br>";
+        //     $i++;
+        // }
+        $gb_output .= "<li><a href=\"".$postLink."\">$postTitle</a></li>\n";
+    }
+    $gb_output .= "</ul>\n";
+    //print_r(array_keys($gb_LocationArray));
+    //var_dump($gb_LocationArray);
+    //print_r(array_count_values(array_column($gb_LocationArray, 'location')));
+
+    //$gb_output .= "len: " .$post_Length. " - cl1: " . $commaLocation1neg . " - cl2: " . $commaLocation2 . ": " . $gb_Location . "--";
+
+    $compareCounter++;
+    
+    
+    wp_reset_postdata();
+    
+    return $gb_output; 
+    
+}
+function gb_statistics_year_2( $parameter )
+{
+
+    $gb_year_parameter = $parameter["year"];
 
     $gb_error ="Please provide a proper year in the shortcode!";
 
