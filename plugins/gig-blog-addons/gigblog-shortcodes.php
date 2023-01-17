@@ -398,7 +398,7 @@ function gb_archive_year( $parameter )
 }
 
 //----------------------------------------------------
-// This is the shortcode to show all entries from a specific year.
+// This is the shortcode to show a quick statistic from a specific year.
 // The shortcode has an array like "year=2021".
 // You can get the value of year by accessing the $parameter["year"].
 //----------------------------------------------------
@@ -458,14 +458,14 @@ function gb_statistics_year( $parameter )
 
     $returnPost_array = get_posts($queryArguments); 
 
-    $gb_LocationArray = array("location" => "","city" => "");
-    $compareCounter = 0;
+    //$gb_LocationArray = array("location" => "","city" => "");
+    $gb_LocationArray = array();
+    $concertCounter = 0;
 
-    $gb_output .= "<ul>\n";
+    //getting all locations from the post_title and put into an array:
     foreach ($returnPost_array as $returnPost)
     {
         $postTitle = $returnPost->post_title;
-        $postLink = get_permalink($returnPost);
 
         $post_Length = strlen($postTitle);
         $commaLocation1 = strrpos($postTitle, ",");
@@ -474,66 +474,41 @@ function gb_statistics_year( $parameter )
         $commaLocation2 = strrpos($postTitle, ",", $commaLocation1neg)+1;
 
         //this includes the LOCATION, CITY, i.e. everything behind the second last comma:
-        $gb_Location = substr($postTitle,$commaLocation2);
-        
-        $gb_LocationTok = explode(",", $gb_Location);
+        $gb_LocationOnly = substr($postTitle,$commaLocation2);
+        $concertCounter = array_push($gb_LocationArray, $gb_LocationOnly);
 
-        $gb_LocationArray = array_merge($gb_LocationArray, $gb_LocationTok);
+    }
+    //just by accident we received the number of all concerts with this method
+    $gb_output .= $concertCounter . " Konzerte im Jahr " . $gb_year_parameter ."<br>";
 
-        //var_dump($gb_LocationTok);
-        //var_dump($gb_LocationArray);
-        //var_dump($gb_LocationArray2);
-        //$gb_output .="..<br>..";
-        //print_r($gb_LocationArray);
-        // $i=0;
-        // if ($i == 0)
-        // {
-        //     $gb_compareArray[0]["location"] = $gb_LocationTok[0];
-        //     $gb_compareArray[0]["counter"] = 1;
-        //     $i+=1;
-        // }
-        // else
-        // {
-        //     //$gb_output .= "im else/if: " . $i ."<br>";
-        //     //var_dump($gb_compareArray);
-        //     print_r($gb_compareArray);
-        //     if ($gb_compareArray[$i]["location"] == $gb_LocationTok)
-        //     {
-        //         $gb_compareArray[$i]["counter"] +=1;
-        //     }
-        //     else
-        //     {
-        //         $gb_compareArray[$i]["location"] = $gb_LocationTok[0];
-        //     }
-        //     if (isset($gb_compareArray[$i]["counter"]))
-        //     {
-        //         $gb_compareArray[$i]["counter"] +=1;
-        //     }
-        //     else
-        //     {
-        //         $gb_compareArray[$i]["counter"] = 1;
-        //     }
-        //     $gb_compareArray[$i]["counter"]=2;
-        //     $gb_output .= "ar1:" . $gb_compareArray[$i]["location"] . " - ar2: " . $gb_compareArray[$i]["counter"] . "<br>";
-        //     $i++;
-        // }
-        $gb_output .= "<li><a href=\"".$postLink."\">$postTitle</a></li>\n";
+    //this is, where the magic (i.e. counting) happens
+    $gb_Counted = array_count_values($gb_LocationArray);
+    //and here is some sorting 
+    arsort($gb_Counted);
+
+    $gbcounter = 0;
+
+    //this outputs the whole statistic:
+    $gb_output .= "<ul>\n";
+    foreach($gb_Counted as $gb_countLoc => $gb_countNum)
+    {
+        //just check, if it ends with ", Stuttgart" and remove this
+        if (substr($gb_countLoc,strpos($gb_countLoc,",")) == ", Stuttgart")
+        {
+            $gb_countLoc = substr($gb_countLoc,0,strpos($gb_countLoc,","));
+        }
+        $gb_output .= "<li>".$gb_countLoc . ": " . $gb_countNum."x</li>\n";
+        $gbcounter++;
     }
     $gb_output .= "</ul>\n";
-    //print_r(array_keys($gb_LocationArray));
-    //var_dump($gb_LocationArray);
-    //print_r(array_count_values(array_column($gb_LocationArray, 'location')));
-
-    //$gb_output .= "len: " .$post_Length. " - cl1: " . $commaLocation1neg . " - cl2: " . $commaLocation2 . ": " . $gb_Location . "--";
-
-    $compareCounter++;
-    
     
     wp_reset_postdata();
     
     return $gb_output; 
     
 }
+
+//this function executes a hard SQL statement, which is probably very hard to find with all the categories, we don't want in the statistics
 function gb_statistics_year_2( $parameter )
 {
 
