@@ -422,7 +422,7 @@ function gb_statistics_year( $parameter )
         return $gb_output;
     }
 
-    $gb_output = "";
+    $gb_output = "<p>";
 
     global $post;
     $queryArguments = array(
@@ -500,7 +500,7 @@ function gb_statistics_year( $parameter )
         $gb_output .= "<li>".$gb_countLoc . ": " . $gb_countNum."x</li>\n";
         $gbcounter++;
     }
-    $gb_output .= "</ul>\n";
+    $gb_output .= "</ul></p>\n";
     
     wp_reset_postdata();
     
