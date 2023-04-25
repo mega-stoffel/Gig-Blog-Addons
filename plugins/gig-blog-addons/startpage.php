@@ -22,6 +22,5 @@ add_shortcode('gb_postCount', 'gb_postCount');
 
 // Shortcodes with some parameters:
 add_shortcode('gb_archive_year', 'gb_archive_year');
-add_shortcode('gb_statistics_year', 'gb_statistics_year');
 add_shortcode('gb_statistics_city', 'gb_statistics_city');
 add_shortcode('gb_archive_person', 'gb_archive_person');
