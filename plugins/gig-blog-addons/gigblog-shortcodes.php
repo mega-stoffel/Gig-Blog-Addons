@@ -398,11 +398,11 @@ function gb_archive_year( $parameter )
 }
 
 //----------------------------------------------------
-// This is the shortcode to show a quick statistic from a specific year.
+// This is the shortcode to show a quick statistic from a specific year for all cities.
 // The shortcode has an array like "year=2021".
 // You can get the value of year by accessing the $parameter["year"].
 //----------------------------------------------------
-function gb_statistics_year( $parameter )
+function gb_statistics_city( $parameter )
 {
 
     $gb_year_parameter = $parameter["year"];
@@ -446,7 +446,8 @@ function gb_statistics_year( $parameter )
     'order'            => 'desc',
     'post_type'        => 'post','page',
     'post_status'      => 'publish',
-    'category'         => '-224,-505,-686,-826,-2746,-3289',
+    //'category'         => '-224,-505,-686,-826,-2746,-3289',
+    'category'         => '-55,-5,-221',
     'suppress_filters' => true 
     );
     // Interview 224
@@ -460,6 +461,7 @@ function gb_statistics_year( $parameter )
 
     //$gb_LocationArray = array("location" => "","city" => "");
     $gb_LocationArray = array();
+    $gb_CityArray = array();
     $concertCounter = 0;
 
     //getting all locations from the post_title and put into an array:
@@ -475,22 +477,24 @@ function gb_statistics_year( $parameter )
 
         //this includes the LOCATION, CITY, i.e. everything behind the second last comma:
         $gb_LocationOnly = substr($postTitle,$commaLocation2);
+        $gb_CityOnly = substr($postTitle,$commaLocation1 + 1);
         $concertCounter = array_push($gb_LocationArray, $gb_LocationOnly);
+        $cityCounter = array_push($gb_CityArray, $gb_CityOnly);
 
     }
     //just by accident we received the number of all concerts with this method
     $gb_output .= $concertCounter . " Konzerte im Jahr " . $gb_year_parameter ."<br>";
 
     //this is, where the magic (i.e. counting) happens
-    $gb_Counted = array_count_values($gb_LocationArray);
+    $gb_Counted1 = array_count_values($gb_LocationArray);
     //and here is some sorting 
-    arsort($gb_Counted);
+    arsort($gb_Counted1);
 
-    $gbcounter = 0;
+    $gbcounter1 = 0;
 
     //this outputs the whole statistic:
-    $gb_output .= "<ul>\n";
-    foreach($gb_Counted as $gb_countLoc => $gb_countNum)
+    $gb_output .= "<h3>nach Location</h3><ul>\n";
+    foreach($gb_Counted1 as $gb_countLoc => $gb_countNum)
     {
         //just check, if it ends with ", Stuttgart" and remove this
         if (substr($gb_countLoc,strpos($gb_countLoc,",")) == ", Stuttgart")
@@ -498,9 +502,33 @@ function gb_statistics_year( $parameter )
             $gb_countLoc = substr($gb_countLoc,0,strpos($gb_countLoc,","));
         }
         $gb_output .= "<li>".$gb_countLoc . ": " . $gb_countNum."x</li>\n";
-        $gbcounter++;
+        $gbcounter1++;
     }
-    $gb_output .= "</ul></p>\n";
+    $gb_output .= "</ul>";
+
+    //doing it again for the second array:
+    //this is, where the magic (i.e. counting) happens, again
+    $gb_Counted2 = array_count_values($gb_CityArray);
+    //and here is some sorting 
+    arsort($gb_Counted2);
+
+    $gbcounter2 = 0;
+
+    //this outputs the whole statistic:
+    $gb_output .= "<h3>nach Stadt</h3><ul>\n";
+    foreach($gb_Counted2 as $gb_countCity => $gb_countNum)
+    {
+        //just check, if it ends with ", Stuttgart" and remove this
+        //if (substr($gb_countCity,strpos($gb_countCity,",")) == ", Stuttgart")
+        //{
+        //    $gb_countCity = substr($gb_countLoc,0,strpos($gb_countCity,","));
+        //}
+        $gb_output .= "<li>".$gb_countCity . ": " . $gb_countNum."x</li>\n";
+        $gbcounter2++;
+    }
+    $gb_output .= "</ul>";
+    
+    $gb_output .= "</p>\n";
     
     wp_reset_postdata();
     
