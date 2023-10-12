@@ -446,8 +446,9 @@ function gb_statistics_city( $parameter )
     'order'            => 'desc',
     'post_type'        => 'post','page',
     'post_status'      => 'publish',
-    //'category'         => '-224,-505,-686,-826,-2746,-3289',
-    'category'         => '-55,-5,-221',
+    'category'         => '-224,-505,-686,-826,-2746,-3289',
+    //TODO: change this for the test instances. Look for a better solution! (please)
+    //'category'         => '-55,-5,-221',
     'suppress_filters' => true 
     );
     // Interview 224
