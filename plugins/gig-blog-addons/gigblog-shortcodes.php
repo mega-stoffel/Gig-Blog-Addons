@@ -44,6 +44,8 @@ function formatGBEventName($gbEventString, $gboutputType)
 // ------------------------------------------
 function gb_archive()
 {
+    $gb_exclude_categories = getExcludedCategories();
+
     if (!(isset($gbAutorID)))
     {
         $gbAutorID = 0;
@@ -55,9 +57,9 @@ function gb_archive()
     'orderby'          => 'date',
     'order'            => 'desc',
     'post_type'        => 'post','page',
-    'author'    => $gbAutorID,
+    'author'           => $gbAutorID,
     'post_status'      => 'publish',
-    'category'         => '-224,-505,-686,-826,-2746,-3289',
+    'category'         => $gb_exclude_categories,
     'suppress_filters' => true 
     );
     // Interview 224
@@ -126,7 +128,9 @@ function gb_archive()
 // ------------------------------------------
 function gb_latestPost()
 {
-    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    $gb_exclude_categories = getExcludedCategories();
+    //$gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    
     $latestArguments = array(
         'posts_per_page'   => 1,
         'order'            => 'date',
@@ -154,7 +158,6 @@ function gb_latestPost()
         // $gb_output .= "<li><a href=\".$postLink.\">$postTitle</a><br></li>\n";
     }
 
-
     wp_reset_postdata();
 
     return $gb_output;
@@ -167,7 +170,8 @@ function gb_latestPost()
 // ------------------------------------------
 function gb_randomPost2()
 {
-    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    $gb_exclude_categories = getExcludedCategories();
+    //$gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
     $queryArguments = array(
         'posts_per_page'   => 1,
         'orderby'          => 'rand',
@@ -201,7 +205,8 @@ function gb_randomPost2()
 
 function gb_randomPost()
 {
-    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    $gb_exclude_categories = getExcludedCategories();
+    //$gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
     $randomArguments = array(
     'posts_per_page'   => 1,
     'orderby'          => 'rand',
@@ -281,7 +286,7 @@ function gb_archive_person( $person = array(), $content = null, $tag = '' )
 // The shortcode has an array like "year=2021".
 // You can get the value of year by accessing the $parameter["year"].
 //----------------------------------------------------
-function gb_archive_year( $parameter )
+function gb_archive_year($parameter)
 {
 
     $gb_year_parameter = $parameter["year"];
@@ -303,6 +308,8 @@ function gb_archive_year( $parameter )
     }
 
     $gb_output = "";
+
+    $gb_exclude_categories = getExcludedCategories();
 
     global $post;
     $queryArguments = array(
@@ -326,7 +333,7 @@ function gb_archive_year( $parameter )
     'order'            => 'desc',
     'post_type'        => 'post','page',
     'post_status'      => 'publish',
-    'category'         => '-224,-505,-686,-826,-2746,-3289',
+    'category'         => $gb_exclude_categories,
     'suppress_filters' => true 
     );
     // Interview 224
@@ -402,7 +409,7 @@ function gb_archive_year( $parameter )
 // The shortcode has an array like "year=2021".
 // You can get the value of year by accessing the $parameter["year"].
 //----------------------------------------------------
-function gb_statistics_city( $parameter )
+function gb_statistics_city($parameter)
 {
 
     $gb_year_parameter = $parameter["year"];
@@ -423,6 +430,9 @@ function gb_statistics_city( $parameter )
     }
 
     $gb_output = "<p>";
+
+    // There are just some categories, which you don't want to see in your archive:
+    $gb_exclude_categories = getExcludedCategories();
 
     global $post;
     $queryArguments = array(
@@ -446,9 +456,7 @@ function gb_statistics_city( $parameter )
     'order'            => 'desc',
     'post_type'        => 'post','page',
     'post_status'      => 'publish',
-    'category'         => '-224,-505,-686,-826,-2746,-3289',
-    //TODO: change this for the test instances. Look for a better solution! (please)
-    //'category'         => '-55,-5,-221',
+    'category'         => $gb_exclude_categories, 
     'suppress_filters' => true 
     );
     // Interview 224
@@ -599,17 +607,12 @@ function gb_statistics_year_2( $parameter )
 
     return($gb_output);
 
-    // Interview 224
-    // Vorankündigung 505
-    // Nachruf 686
-    // Verlosung 826
-    // Top Liste 2746
-    // Adventskalender 3289
-
 }
 
 function gb_format_post($gb_post_title = '', $outputType = '')
 {
+    $gb_exclude_categories = getExcludedCategories();
+
     switch ($gb_post_title)
     {
         case "latest":
@@ -677,13 +680,8 @@ function gb_format_post($gb_post_title = '', $outputType = '')
 
 function gb_get_post($postInfo = '', $outputType = '')
 {
-    // Interview 224
-    // Vorankündigung 505
-    // Nachruf 686
-    // Verlosung 826
-    // Top Liste 2746
-    // Adventskalender 3289
-    $gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    $gb_exclude_categories = getExcludedCategories();
+    //$gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
 
     switch ($postInfo)
     {
@@ -748,6 +746,46 @@ function gb_get_post($postInfo = '', $outputType = '')
         }
     }
     return $gb_output;
+}
+
+// ==============================================0
+//  Helper Functions
+// ==============================================0
+
+function getExcludedCategories()
+{
+    $excludeCategorys = array
+    (
+    "Interview",
+    "Vorankündigung",
+    "Nachruf",
+    "Verlosung",
+    "Top Liste",
+    "Adventskalender");
+
+    $gb_exclude_categories = "";
+
+    for($i = 0; $i < count($excludeCategorys); ++$i)
+    {
+        if (get_categoryID_from_Name($excludeCategorys[$i]) <> 0)
+            $gb_exclude_categories .= "-" . get_categoryID_from_Name($excludeCategorys[$i]).",";
+    }
+    //$gb_exclude_categories = "-55,-5,-221,";
+    //$gb_exclude_categories = "-224,-505,-686,-826,-2746,-3289";
+    return $gb_exclude_categories;
+}
+
+function get_categoryID_from_Name($categoryName)
+{
+    $wpCategory = get_term_by('name', $categoryName, 'category');
+    if ($wpCategory)
+    {
+        return $wpCategory->term_id;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 ?>
