@@ -11,7 +11,7 @@ It's used on https://gig-blog.net
 ### Shortcodes
 
 - gb_latestPost  
-This function returns a link to the latest published post, named: "Neuster Post: BANDNAME(S)"  
+This function returns a link to the latest published post, named: "Neuster Post: BANDNAME"  
 - gb_randomPost  
 This function simply gets a random post of all existing posts.  
 And then it returns a link to this post, named with the post's headline until the first comma.  
