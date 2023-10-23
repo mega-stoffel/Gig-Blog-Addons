@@ -309,6 +309,7 @@ function gb_archive_year($parameter)
 
     $gb_output = "";
 
+    // There are just some categories, which you don't want to see in your archive:
     $gb_exclude_categories = getExcludedCategories();
 
     global $post;
@@ -336,13 +337,7 @@ function gb_archive_year($parameter)
     'category'         => $gb_exclude_categories,
     'suppress_filters' => true 
     );
-    // Interview 224
-    // Vorankündigung 505
-    // Nachruf 686
-    // Verlosung 826
-    // Top Liste 2746
-    // Adventskalender 3289
-
+    
     $returnPost_array = get_posts($queryArguments); 
 
     $gb_output .= "<ul>\n";
@@ -431,7 +426,7 @@ function gb_statistics_city($parameter)
 
     $gb_output = "<p>";
 
-    // There are just some categories, which you don't want to see in your archive:
+    // There are just some categories, which you don't want to see in your statistic:
     $gb_exclude_categories = getExcludedCategories();
 
     global $post;
@@ -459,12 +454,6 @@ function gb_statistics_city($parameter)
     'category'         => $gb_exclude_categories, 
     'suppress_filters' => true 
     );
-    // Interview 224
-    // Vorankündigung 505
-    // Nachruf 686
-    // Verlosung 826
-    // Top Liste 2746
-    // Adventskalender 3289
 
     $returnPost_array = get_posts($queryArguments); 
 
@@ -609,6 +598,12 @@ function gb_statistics_year_2( $parameter )
 
 }
 
+
+
+// ==============================================0
+//  Begin of helper Functions
+// ==============================================0
+
 function gb_format_post($gb_post_title = '', $outputType = '')
 {
     $gb_exclude_categories = getExcludedCategories();
@@ -677,6 +672,7 @@ function gb_format_post($gb_post_title = '', $outputType = '')
     }
     return $gb_output;
 }
+
 
 function gb_get_post($postInfo = '', $outputType = '')
 {
@@ -749,7 +745,7 @@ function gb_get_post($postInfo = '', $outputType = '')
 }
 
 // ==============================================0
-//  Helper Functions
+//  some more helper Functions
 // ==============================================0
 
 function getExcludedCategories()

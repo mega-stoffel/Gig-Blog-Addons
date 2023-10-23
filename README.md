@@ -10,6 +10,8 @@ It's used on https://gig-blog.net
 
 ### Shortcodes
 
+#### without Parameters
+
 - gb_latestPost  
 This function returns a link to the latest published post, named: "Neuster Post: BANDNAME"  
 - gb_randomPost  
@@ -21,18 +23,21 @@ This function simply gets a random post of all existing posts and returns a diff
 This function gets the number of all posts.  
 Divides them with the number of posts per page from the options.  
 THen gets a random number of all available pages.  
-- gb_archive_year  
-This function gets an archive of all existing posts for a specified year.  
-Use like [gb_archive_year year=2022]  
-- gb_statistics_year  
-This function generates a simple statistic for a specified year.
-Use like [gb_statistics_year year=2022]  
 - gb_archive  
 This function gets an archive of all existing posts. Limited with some exceptions.  
 - gb_postCount    
 This function gets the number of all posts.  
 And then rounds it down to the lower hundreds.  
 Can be used to show a rough number of published posts.  
+
+#### with Parameter
+
+- gb_archive_year  
+This function gets an archive of all existing posts for a specified year.  
+Use like [gb_archive_year year=2022]  
+- gb_statistics_city  
+This function generates a simple statistic for a specified year.
+Use like [gb_statistics_city year=2022]  
 
 ## Test Environment
 
