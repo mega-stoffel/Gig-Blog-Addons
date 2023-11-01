@@ -237,11 +237,12 @@ function gb_randomPost()
 // This function gets the number of all posts.
 // And then rounds it down to the lower hundreds.
 // Can be used to show a rough number of published posts.
+// Formats with a "." as the thousands separator
 // ------------------------------------------
 function gb_postCount()
 {
     $numberOfPosts = wp_count_posts()->publish;
-    $roundDown = (int)($numberOfPosts / 100) *100;
+    $roundDown = number_format((int)($numberOfPosts / 100) *100 , 0 , ",", ".");
 
     wp_reset_postdata();
 
