@@ -24,3 +24,4 @@ add_shortcode('gb_postCount', 'gb_postCount');
 add_shortcode('gb_archive_year', 'gb_archive_year');
 add_shortcode('gb_statistics_city', 'gb_statistics_city');
 add_shortcode('gb_archive_person', 'gb_archive_person');
+add_shortcode('gb_latestPost2', 'gb_latestPost2');
