@@ -398,7 +398,7 @@ function gb_archive_year($parameter)
         $postTitle = $returnPost->post_title;
         $postLink = get_permalink($returnPost);
 
-        $gb_output .= "<li><a href=\".$postLink.\">$postTitle</a><br></li>\n";
+        $gb_output .= "<li><a href=\"". $postLink . "\">$postTitle</a><br></li>\n";
     }
     $gb_output .= "</ul>\n";
 
@@ -533,7 +533,7 @@ function gb_statistics_city($parameter)
 
     }
     //just by accident we received the number of all concerts with this method
-    $gb_output .= $concertCounter . " Konzerte im Jahr " . $gb_year_parameter ."<br>";
+    $gb_output .= $concertCounter . " Konzerte im Jahr " . $gb_year_parameter ."<br>\n";
 
     //this is, where the magic (i.e. counting) happens
     $gb_Counted1 = array_count_values($gb_LocationArray);
@@ -554,7 +554,7 @@ function gb_statistics_city($parameter)
         $gb_output .= "<li>".$gb_countLoc . ": " . $gb_countNum."x</li>\n";
         $gbcounter1++;
     }
-    $gb_output .= "</ul>";
+    $gb_output .= "</ul>\n";
 
     //doing it again for the second array:
     //this is, where the magic (i.e. counting) happens, again
@@ -565,7 +565,7 @@ function gb_statistics_city($parameter)
     $gbcounter2 = 0;
 
     //this outputs the whole statistic:
-    $gb_output .= "<h3>nach Stadt</h3><ul>\n";
+    $gb_output .= "<h3>nach Stadt</h3>\n<ul>\n";
     foreach($gb_Counted2 as $gb_countCity => $gb_countNum)
     {
         //just check, if it ends with ", Stuttgart" and remove this
@@ -576,7 +576,7 @@ function gb_statistics_city($parameter)
         $gb_output .= "<li>".$gb_countCity . ": " . $gb_countNum."x</li>\n";
         $gbcounter2++;
     }
-    $gb_output .= "</ul>";
+    $gb_output .= "</ul>\n";
     
     $gb_output .= "</p>\n";
     
