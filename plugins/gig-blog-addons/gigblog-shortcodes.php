@@ -62,12 +62,6 @@ function gb_archive()
     'category'         => $gb_exclude_categories,
     'suppress_filters' => true 
     );
-    // Interview 224
-    // Vorankündigung 505
-    // Nachruf 686
-    // Verlosung 826
-    // Top Liste 2746
-    // Adventskalender 3289
 
     $myPosts_array = get_posts( $postArguments ); 
     $compareYear = '1'; 
@@ -164,6 +158,62 @@ function gb_latestPost()
 }
 
 // ------------------------------------------
+// This function simply gets the latest of all existing posts.
+// You can define, if you want to have the link or the band (i.e. all before the first comma)
+// ------------------------------------------
+function gb_latestPost2($parameter)
+{
+    $gb_latest_post_type = $parameter["type"];
+
+    $gb_error ="Please provide a proper type in the shortcode!";
+
+    if (! is_string($gb_latest_post_type))
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    $gb_exclude_categories = getExcludedCategories();
+    
+    $latestArguments = array(
+        'posts_per_page'   => 1,
+        'order'            => 'date',
+        'orderby'          => 'desc',
+        'post_type'        => 'post',
+        'post_status'      => 'publish',
+        'category'         => $gb_exclude_categories,
+        'suppress_filters' => true
+        );
+
+    $latestPost_array = get_posts( $latestArguments ); 
+    $gb_output = '';
+
+    foreach ($latestPost_array as $latestPost)
+    {
+        $latestTitle = get_post_field('post_title', $latestPost);
+        $latestLink = get_permalink($latestPost);
+
+        // $gb_output .= '<a href="' . $latestLink .'">';
+        // $gb_output .= "Neuster Beitrag: ";
+        // $gb_output .= trim(substr($latestTitle, 0, (strpos($latestTitle, ','))));
+        // $gb_output .= '</a>';
+    }
+
+    wp_reset_postdata();
+
+    if ($gb_latest_post_type== "band")
+    {
+        return trim(substr($latestTitle, 0, (strpos($latestTitle, ','))));;
+    }
+
+    if ($gb_latest_post_type== "link")
+    {
+        return $latestLink;
+    }
+
+}
+
+// ------------------------------------------
 // This function simply gets a random post of all existing posts.
 // And then it returns a link to this post, named "zufälliger Artikel".
 // This could be used for the insta-page.
@@ -196,6 +246,7 @@ function gb_randomPost2()
 
     return $gb_output;
 }
+
 
 
 // ------------------------------------------
@@ -600,8 +651,7 @@ function gb_statistics_year_2( $parameter )
 }
 
 
-
-// ==============================================0
+ // ==============================================0
 //  Begin of helper Functions
 // ==============================================0
 

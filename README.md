@@ -32,6 +32,9 @@ Can be used to show a rough number of published posts.
 
 #### with Parameter
 
+- gb_latestPost2  
+This function returns a link and/or the band of the latest published post.
+Use like [gb_latestPost2 type=band] or [gb_latestPost2 type=link]
 - gb_archive_year  
 This function gets an archive of all existing posts for a specified year.  
 Use like [gb_archive_year year=2022]  
