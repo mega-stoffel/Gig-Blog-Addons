@@ -167,7 +167,13 @@ function gb_latestPost2($parameter)
 
     $gb_error ="Please provide a proper type in the shortcode!";
 
-    if (! is_string($gb_latest_post_type))
+    if (strlen($gb_latest_post_type)!=4)
+    {
+        $gb_output = $gb_error;
+        return $gb_output;
+    }
+
+    if (!(($gb_latest_post_type == "link") || ($gb_latest_post_type =="band")))
     {
         $gb_output = $gb_error;
         return $gb_output;
@@ -651,7 +657,7 @@ function gb_statistics_year_2( $parameter )
 }
 
 
- // ==============================================0
+// ==============================================0
 //  Begin of helper Functions
 // ==============================================0
 
@@ -794,6 +800,7 @@ function gb_get_post($postInfo = '', $outputType = '')
     }
     return $gb_output;
 }
+
 
 // ==============================================0
 //  some more helper Functions
