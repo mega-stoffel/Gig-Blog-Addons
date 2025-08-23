@@ -615,7 +615,7 @@ function gb_format_post($gb_post_title = '', $outputType = '')
     $gb_exclude_categories = getExcludedCategories();
 
     $gb_output = "";
-    
+
     switch ($gb_post_title)
     {
         case "latest":
