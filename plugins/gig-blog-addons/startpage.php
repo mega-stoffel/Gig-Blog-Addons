@@ -3,7 +3,7 @@
 Plugin Name:  Gig-Blog Addons
 Plugin URI:   https://github.com/mega-stoffel/gig-blog-addons
 Description:  just a few addons to visualize on the gig-blog website
-Version:      1.02
+Version:      1.1
 Author:       X-tof Hoyer
 Author URI:   https://gig-blog.net
 */
