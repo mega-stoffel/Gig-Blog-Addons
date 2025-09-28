@@ -765,7 +765,8 @@ function getExcludedCategories()
     "Nachruf",
     "Verlosung",
     "Top Liste",
-    "Adventskalender");
+    "Adventskalender",
+    "Allgemein");
 
     $gb_exclude_categories = "";
 
