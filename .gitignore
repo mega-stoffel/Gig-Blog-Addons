@@ -28,5 +28,8 @@ node_modules/
 *.sql
 *.sqlite
 
+#ignore potential backup files
+gig-blog.WordPress.*.xml
+
 # ignore all default files
 index.php

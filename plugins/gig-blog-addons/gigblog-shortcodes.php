@@ -293,6 +293,7 @@ function gb_archive_year($parameter)
     $gb_year_parameter = $parameter["year"];
 
     $gb_error ="Please provide a proper year in the shortcode!";
+    $gb_output = "";
 
     if (! is_numeric($gb_year_parameter))
     {
@@ -307,8 +308,6 @@ function gb_archive_year($parameter)
         $gb_output = $gb_error;
         return $gb_output;
     }
-
-    $gb_output = "";
 
     // There are just some categories, which you don't want to see in your archive:
     $gb_exclude_categories = getExcludedCategories();
@@ -347,7 +346,7 @@ function gb_archive_year($parameter)
         $postTitle = $returnPost->post_title;
         $postLink = get_permalink($returnPost);
 
-        $gb_output .= "<li><a href=\".$postLink.\">$postTitle</a><br></li>\n";
+        $gb_output .= '<li><a href="' . $postLink . '">' . $postTitle . '</a><br></li>' . "\n";
     }
     $gb_output .= "</ul>\n";
 
@@ -410,6 +409,7 @@ function gb_statistics_city($parameter)
 
     $gb_year_parameter = $parameter["year"];
     $gb_error ="Please provide a proper year in the shortcode!";
+    $gb_output = "";
 
     if (! is_numeric($gb_year_parameter))
     {
@@ -468,6 +468,11 @@ function gb_statistics_city($parameter)
     {
         $postTitle = $returnPost->post_title;
 
+        // Check if there are at least two commas
+        if (substr_count($postTitle, ",") < 2) {
+            continue; // skip malformed titles
+        }
+        
         $post_Length = strlen($postTitle);
         $commaLocation1 = strrpos($postTitle, ",");
         //calculation for little strange offset for strrpos
@@ -522,7 +527,7 @@ function gb_statistics_city($parameter)
         //{
         //    $gb_countCity = substr($gb_countLoc,0,strpos($gb_countCity,","));
         //}
-        $gb_output .= "<li>".$gb_countCity . ": " . $gb_countNum."x</li>\n";
+        $gb_output .= "<li>" . $gb_countCity . ": " . $gb_countNum . "x</li>\n";
         $gbcounter2++;
     }
     $gb_output .= "</ul>";
@@ -608,6 +613,8 @@ function gb_statistics_year_2( $parameter )
 function gb_format_post($gb_post_title = '', $outputType = '')
 {
     $gb_exclude_categories = getExcludedCategories();
+
+    $gb_output = "";
 
     switch ($gb_post_title)
     {
@@ -758,7 +765,9 @@ function getExcludedCategories()
     "Nachruf",
     "Verlosung",
     "Top Liste",
-    "Adventskalender");
+    "Topliste",
+    "Adventskalender",
+    "Allgemeines");
 
     $gb_exclude_categories = "";
 
