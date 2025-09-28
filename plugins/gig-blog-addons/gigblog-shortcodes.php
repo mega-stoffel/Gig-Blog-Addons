@@ -765,6 +765,7 @@ function getExcludedCategories()
     "Nachruf",
     "Verlosung",
     "Top Liste",
+    "Topliste",
     "Adventskalender",
     "Allgemein");
 
