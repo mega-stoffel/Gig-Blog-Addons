@@ -767,7 +767,7 @@ function getExcludedCategories()
     "Top Liste",
     "Topliste",
     "Adventskalender",
-    "Allgemein");
+    "Allgemeines");
 
     $gb_exclude_categories = "";
 
